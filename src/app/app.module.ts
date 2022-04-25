@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule,Injector} from '@angular/core';
 import { SchemaFormModule, WidgetRegistry } from 'ngx-schema-form';
 
 import { AppComponent } from './app.component';
@@ -80,6 +80,8 @@ import { LoincNoticeComponent } from './lib/widgets/loinc-notice/loinc-notice.co
 import { StringWithCssComponent } from './lib/widgets/string-with-css/string-with-css.component';
 import { RestrictionsComponent } from './lib/widgets/restrictions/restrictions.component';
 import { RestrictionsOperatorComponent } from './lib/widgets/restrictions-operator/restrictions-operator.component';
+
+import { createCustomElement } from '@angular/elements';
 
 @NgModule({
   declarations: [
@@ -171,4 +173,11 @@ import { RestrictionsOperatorComponent } from './lib/widgets/restrictions-operat
   providers: [{provide: WidgetRegistry, useClass: LformsWidgetRegistry}, AppJsonPipe],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(private injector: Injector) {
+    const el = createCustomElement(AppComponent, { injector });
+    customElements.define('news-widget', el);
+  }
+
+ }
